@@ -54,8 +54,6 @@ services:
     depends_on:
       es01:
         condition: service_healthy
-      es02:
-        condition: service_healthy
     image: docker.elastic.co/kibana/kibana:${STACK_VERSION}
     volumes:
       - ${PWD}/data/kibana:/usr/share/kibana/data
