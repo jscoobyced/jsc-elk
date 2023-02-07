@@ -61,7 +61,7 @@ services:
     ports:
       - ${ES_PORT}:9200
     environment:
-      - node.name=es01
+      - node.name=es02
       - cluster.name=${CLUSTER_NAME}
       - cluster.initial_master_nodes=es01,es02
       - discovery.seed_hosts=es01
