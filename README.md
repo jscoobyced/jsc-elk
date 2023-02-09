@@ -20,14 +20,61 @@ After a while the stack is up and you can test it on a browser at the URL https:
 
 ## Credentials
 
-Elastic Search credentials:
-- Username: elastic
-- Password: the `ELASTIC_PASSWORD` from the `.env` file
-
-Kibana credentials:
-- Username: admin
-- Password: the `ELASTIC_PASSWORD` from the `.env` file (Note: **NOT** the `KIBANA_PASSWORD`)
+This setup is intended to run behind an NGINX reverse proxy. The credentials will be managed by NGINX
 
 # Expose via nginx
 
-You can create a configuration in your server to expose Elastic Search and Kibana
+You can create a configuration in your server to expose Elastic Search and Kibana. For example, here are default setups for nginx.
+
+## Elastic Search
+```
+server {
+	server_name es.mydomain.io;
+	root /var/www/html;
+	index index.html;
+	server_tokens off;
+
+	location / {
+		auth_basic           "Restricted";
+		auth_basic_user_file /etc/nginx/.htpasswd;
+		proxy_pass         http://localhost:9200;
+		proxy_http_version 1.1;
+		proxy_set_header   Upgrade $http_upgrade;
+		proxy_set_header   Connection keep-alive;
+		proxy_set_header   Host $host;
+		proxy_cache_bypass $http_upgrade;
+		proxy_set_header   X-Forwarded-For $proxy_add_x_forwarded_for;
+		proxy_set_header   X-Forwarded-Proto $scheme;
+	}
+}
+```
+
+## Kibana
+```
+server {
+	server_name es.mydomain.io;
+	root /var/www/html;
+	index index.html;
+	server_tokens off;
+
+	location / {
+		auth_basic           "Restricted";
+		auth_basic_user_file /etc/nginx/.htpasswd;
+		proxy_pass         http://localhost:5601;
+		proxy_http_version 1.1;
+		proxy_set_header   Upgrade $http_upgrade;
+		proxy_set_header   Connection keep-alive;
+		proxy_set_header   Host $host;
+		proxy_cache_bypass $http_upgrade;
+		proxy_set_header   X-Forwarded-For $proxy_add_x_forwarded_for;
+		proxy_set_header   X-Forwarded-Proto $scheme;
+	}
+}
+```
+
+Remove the `auth_basic` and `auth_basic_user_file` for unrestricted access. Use your distro to generate the `.htpasswd` accordingly. Mose distro will be:
+```
+sudo htpasswd -c /etc/nginx/.htpasswd my_username
+```
+
+If you don't have the `htpasswd` command, install the `apache2-utils` package.

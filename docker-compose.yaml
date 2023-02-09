@@ -1,4 +1,4 @@
-version: "2.2"
+version: "3"
 
 services:
   setup:
@@ -26,6 +26,7 @@ services:
     ports:
       - ${ES_PORT}:9200
     environment:
+      - TZ=Asia/Bangkok
       - node.name=es01
       - cluster.name=${CLUSTER_NAME}
       - cluster.initial_master_nodes=es01,es02
@@ -36,6 +37,7 @@ services:
       - xpack.security.transport.ssl.enabled=false
       - xpack.license.self_generated.type=${LICENSE}
     mem_limit: ${ES_MEM_LIMIT}
+    restart: always
     ulimits:
       memlock:
         soft: -1
@@ -57,6 +59,7 @@ services:
     volumes:
       - ${PWD}/data/es/data02:/usr/share/elasticsearch/data
     environment:
+      - TZ=Asia/Bangkok
       - node.name=es02
       - cluster.name=${CLUSTER_NAME}
       - cluster.initial_master_nodes=es01,es02
@@ -67,6 +70,7 @@ services:
       - xpack.security.transport.ssl.enabled=false
       - xpack.license.self_generated.type=${LICENSE}
     mem_limit: ${ES_MEM_LIMIT}
+    restart: always
     ulimits:
       memlock:
         soft: -1
@@ -93,9 +97,11 @@ services:
     ports:
       - ${KIBANA_PORT}:5601
     environment:
+      - TZ=Asia/Bangkok
       - SERVERNAME=kibana
       - ELASTICSEARCH_HOSTS=http://es01:9200
     mem_limit: ${KIBANA_MEM_LIMIT}
+    restart: always
     healthcheck:
       test:
         [
