@@ -94,7 +94,7 @@ services:
     image: docker.elastic.co/kibana/kibana:${STACK_VERSION}
     volumes:
       - ${PWD}/data/kibana/data:/usr/share/kibana/data
-      - ${PWD}/data/kibana/config:/usr/share/kibana/config
+      - ${PWD}/data/kibana/config/kibana.yml:/usr/share/kibana/config/kibana.yml
     ports:
       - ${KIBANA_PORT}:5601
     environment:
