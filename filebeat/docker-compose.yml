@@ -10,6 +10,7 @@ services:
       - ELASTICSEARCH_HOSTS=${ES_HOST}
       - ELASTICSEARCH_USERNAME=${ES_USERNAME}
       - ELASTICSEARCH_PASSWORD=${ES_PASSWORD}
+      - NGINX_LOGS=${NGINX_LOGS}
     labels:
       - co.elastic.logs/enabled=false
       - co.elastic.logs/module=nginx
@@ -17,12 +18,6 @@ services:
       - type: bind
         source: /var/log/nginx/${NGINX_LOGS}
         target: /var/log/nginx
-      - type: bind
-        source: /var/run/docker.sock
-        target: /var/run/docker.sock
-      - type: bind
-        source: /var/lib/docker
-        target: /var/lib/docker
       - type: bind
         source: ${PWD}/filebeat.docker.yml
         target: /usr/share/filebeat/filebeat.yml
