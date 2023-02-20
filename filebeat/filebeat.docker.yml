@@ -13,5 +13,6 @@ processors:
 
 output.elasticsearch:
   hosts: '${ELASTICSEARCH_HOSTS}'
+  protocol: "https"
   username: '${ELASTICSEARCH_USERNAME:}'
   password: '${ELASTICSEARCH_PASSWORD:}'
