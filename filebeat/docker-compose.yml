@@ -1,0 +1,26 @@
+version: "3.8"
+
+services:
+  filebeat:
+    image: docker.elastic.co/beats/filebeat:${STACK_VERSION}
+    restart: unless-stopped
+    user: root
+    environment:
+      - TZ=Asia/Bangkok
+      - ELASTICSEARCH_HOSTS=${ES_HOST}
+      - ELASTICSEARCH_USERNAME=${ES_USERNAME}
+      - ELASTICSEARCH_PASSWORD=${ES_PASSWORD}
+    labels:
+      - co.elastic.logs/enabled=false
+      - co.elastic.logs/module=nginx
+    volumes:
+      - type: bind
+        source: /var/run/docker.sock
+        target: /var/run/docker.sock
+      - type: bind
+        source: /var/lib/docker
+        target: /var/lib/docker
+      - type: bind
+        source: $(pwd)/filebeat.docker.yml
+        target: /usr/share/filebeat/filebeat.yml
+        read_only: true
