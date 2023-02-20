@@ -6,8 +6,7 @@ filebeat.config:
 filebeat.inputs:
 - type: log
   paths:
-    - /var/log/nginx/${NGINX_LOGS}/*.log
-  exclude_files: ['\.gz$']
+    - /var/log/nginx/*.log
 
 processors:
 - add_cloud_metadata: ~
