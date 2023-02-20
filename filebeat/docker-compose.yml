@@ -24,6 +24,6 @@ services:
         source: /var/lib/docker
         target: /var/lib/docker
       - type: bind
-        source: $(pwd)/filebeat.docker.yml
+        source: ${PWD}/filebeat.docker.yml
         target: /usr/share/filebeat/filebeat.yml
         read_only: true
