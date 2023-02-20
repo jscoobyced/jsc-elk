@@ -15,6 +15,9 @@ services:
       - co.elastic.logs/module=nginx
     volumes:
       - type: bind
+        source: /var/log/nginx/${NGINX_LOGS}
+        target: /var/log/nginx
+      - type: bind
         source: /var/run/docker.sock
         target: /var/run/docker.sock
       - type: bind
