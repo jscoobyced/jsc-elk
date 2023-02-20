@@ -4,7 +4,7 @@ services:
   filebeat:
     image: docker.elastic.co/beats/filebeat:${STACK_VERSION}
     restart: unless-stopped
-    user: root
+    user: "root"
     environment:
       - TZ=Asia/Bangkok
       - ELASTICSEARCH_HOSTS=${ES_HOST}
