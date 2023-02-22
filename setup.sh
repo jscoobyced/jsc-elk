@@ -38,8 +38,10 @@ source .env
 
 echo "Updating the logstash configuration."
 cp ../conf/logstash.conf ${DATA_ROOT}/logstash/config
-sed -i "s~ES_PASSWORD~${ES_PASSWORD}~g" ${DATA_ROOT}/logstash/config/logstash.conf
 sed -i "s~ES_HOST~${ES_HOST}~g" ${DATA_ROOT}/logstash/config/logstash.conf
+sed -i "s~ES_USERNAME~${ES_USERNAME}~g" ${DATA_ROOT}/logstash/config/logstash.conf
+sed -i "s~ES_PASSWORD~${ES_PASSWORD}~g" ${DATA_ROOT}/logstash/config/logstash.conf
+sed -i "s~ES_PROTOCOL~${ES_PROTOCOL}~g" ${DATA_ROOT}/logstash/config/logstash.conf
 
 echo "Updating the filebeat configuration."
 cp ../conf/filebeat.yml ${DATA_ROOT}/filebeat/config
