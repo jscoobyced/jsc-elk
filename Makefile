@@ -3,7 +3,7 @@
 init:
 	cp docker/server/.env.example docker/server/.env
 	cp docker/capture/.env.example docker/capture/.env
-	echo "Please update `docker/server/.env` and `docker/capture/.env` files."
+	echo "Please update \`docker/server/.env\` and \`docker/capture/.env\` files."
 
 setup: stop-log stop-es
 	./setup.sh
