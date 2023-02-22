@@ -1,16 +1,24 @@
 version: "3.8"
 
 services:
+  logstash:
+    image: docker.elastic.co/logstash/logstash:${STACK_VERSION}
+    restart: unless-stopped
+    user: "logstash"
+    volumes:
+      - type: bind
+        source: ${PWD}/../../data/logstash/config/logstash.conf
+        target: /usr/share/logstash/pipeline/logstash.conf
+        read_only: true
+
   filebeat:
     image: docker.elastic.co/beats/filebeat:${STACK_VERSION}
     restart: unless-stopped
     user: "root"
+    depends_on:
+      - logstash
     environment:
       - TZ=Asia/Bangkok
-      - ELASTICSEARCH_HOSTS=${ES_HOST}
-      - ELASTICSEARCH_USERNAME=${ES_USERNAME}
-      - ELASTICSEARCH_PASSWORD=${ES_PASSWORD}
-      - NGINX_LOGS=${NGINX_LOGS}
     labels:
       - co.elastic.logs/enabled=false
       - co.elastic.logs/module=nginx
@@ -19,6 +27,7 @@ services:
         source: /var/log/nginx/${NGINX_LOGS}
         target: /var/log/nginx
       - type: bind
-        source: ${PWD}/filebeat.docker.yml
+        source: ${PWD}/../../data/filebeat/config/filebeat.yml
         target: /usr/share/filebeat/filebeat.yml
         read_only: true
+
